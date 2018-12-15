@@ -1,3 +1,6 @@
+import DataArrayFetcher from './DataArrayFetcher';
+import DataUrlFetcher from './DataUrlFetcher';
+
 export default class Autocomplete {
   constructor(rootEl, options = {}) {
     this.rootEl = rootEl;
@@ -6,26 +9,33 @@ export default class Autocomplete {
       data: [],
       ...options,
     };
+    this.resultsFetcher = this.getResultsFetcher();
 
     this.init();
+  }
+
+  getResultsFetcher() {
+    const { data, numOfResults, dataUrl, formatResponse } = this.options;
+
+    if (dataUrl) {
+      return new DataUrlFetcher(dataUrl, numOfResults, formatResponse);
+    } else {
+      return new DataArrayFetcher(data, numOfResults);
+    }
   }
 
   /**
    * Given an array and a query, return a filtered array based on the query.
    */
-  getResults(query, data) {
+  getResults(query) {
     if (!query) return [];
 
-    // Filter for matching strings
-    return data.filter((item) => {
-      return item.text.toLowerCase().includes(query.toLowerCase());
-    });
+    return this.resultsFetcher.getResults(query);
   }
 
-  onQueryChange(query) {
+  async onQueryChange(query) {
     // Get data for the dropdown
-    let results = this.getResults(query, this.options.data);
-    results = results.slice(0, this.options.numOfResults);
+    let results = await this.getResults(query);
 
     this.updateDropdown(results);
   }
