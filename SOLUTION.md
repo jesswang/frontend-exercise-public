@@ -4,11 +4,11 @@
 The Autocomplete constructor can now take additional options to configure it to display data from an HTTP endpoint. The syntax is as follows:
 `new Autocomplete(el, [options={}])`
 ### Parameters
-**`el (Element)`**: The DOM element to which the autocomplete elements will be appended.
-**`[options.data=[]] (Array)`**: The static data array that populates the autocomplete. The expected format is `[{ text: "...", value: "..." }]`.
-**`[options.dataUrl] (String)`**: The HTTP endpoint from which data is fetched to populate the autocomplete. If both `dataUrl` and `data` options are supplied, `data` will be ignored. The url must indicate the position of the query and the number of results to fetch (if applicable) like so: `"https://api.github.com/search/users?q={query}&per_page={numOfResults}"`.
-**`[options.formatResponse] (Function)`**: Must be provided if `dataUrl` is provided. The function takes in the HTTP response data and must be implemented to return an array of objects in the format `[{ text: "...", value: "..." }]`.
-**`[options.onSelect] (Function)`**: The autocomplete selection handler. When it is invoked, it is passed the `value` field from the results (either from the static data array or from the formatted HTTP response data array).
+**`el (Element)`**: The DOM element to which the autocomplete elements will be appended.  
+**`[options.data=[]] (Array)`**: The static data array that populates the autocomplete. The expected format is `[{ text: "...", value: "..." }]`.  
+**`[options.dataUrl] (String)`**: The HTTP endpoint from which data is fetched to populate the autocomplete. If both `dataUrl` and `data` options are supplied, `data` will be ignored. The url must indicate the position of the query and the number of results to fetch (if applicable) like so: `"https://api.github.com/search/users?q={query}&per_page={numOfResults}"`.  
+**`[options.formatResponse] (Function)`**: Must be provided if `dataUrl` is provided. The function takes in the HTTP response data and must be implemented to return an array of objects in the format `[{ text: "...", value: "..." }]`.  
+**`[options.onSelect] (Function)`**: The autocomplete selection handler. When it is invoked, it is passed the `value` field from the results (either from the static data array or from the formatted HTTP response data array).  
 **`[options.numOfResults=10] (Number)`**: The maximum number of results to show.
 
 ### Notes:
