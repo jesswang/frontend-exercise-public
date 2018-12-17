@@ -14,8 +14,11 @@ export default class Autocomplete {
     this.init();
   }
 
+  /**
+  * Factory that returns a data fetcher object
+  */
   getResultsFetcher() {
-    const { data, numOfResults, dataUrl, formatResponse } = this.options;
+    const { dataUrl, numOfResults, data, formatResponse } = this.options;
 
     if (dataUrl) {
       return new DataUrlFetcher(dataUrl, numOfResults, formatResponse);
@@ -31,6 +34,43 @@ export default class Autocomplete {
     if (!query) return [];
 
     return this.resultsFetcher.getResults(query);
+  }
+
+  onKeydown(keyCode) {
+    const dropdownLength = this.listEl.childElementCount;
+
+    if (dropdownLength > 0) {
+      if (keyCode === 38) {
+        this.highlightedIndex = (this.highlightedIndex !== -1) ?
+          this.highlightedIndex - 1 : dropdownLength - 1;
+          this.highlightResult();
+      } else if (keyCode === 40) {
+        this.highlightedIndex = (this.highlightedIndex < dropdownLength - 1) ?
+          this.highlightedIndex + 1 : -1;
+          this.highlightResult();
+      } else if (keyCode === 13) {
+        this.selectResult();
+      }
+    }
+  }
+
+  highlightResult() {
+    const liElements = this.listEl.children;
+    for (let child of liElements) {
+      child.classList.remove('highlighted');
+    }
+
+    if (this.highlightedIndex !== -1) {
+      const resultEl = liElements[this.highlightedIndex];
+      resultEl.classList.add('highlighted');
+    }
+  }
+
+  selectResult() {
+    if (this.highlightedIndex !== -1) {
+      const resultEl = this.listEl.children[this.highlightedIndex];
+      resultEl.click();
+    }
   }
 
   async onQueryChange(query) {
@@ -71,6 +111,8 @@ export default class Autocomplete {
 
     inputEl.addEventListener('input',
       event => this.onQueryChange(event.target.value));
+    inputEl.addEventListener('keydown',
+      event => this.onKeydown(event.keyCode));
 
     return inputEl;
   }
@@ -84,5 +126,7 @@ export default class Autocomplete {
     this.listEl = document.createElement('ul');
     this.listEl.classList.add('results');
     this.rootEl.appendChild(this.listEl);
+
+    this.highlightedIndex = -1;
   }
 }

@@ -8,6 +8,8 @@ body {
 
 .form-group {
   width: 200px;
+  display: inline-block;
+  vertical-align: top;
 }
 
 ul {
@@ -21,7 +23,6 @@ ul {
   border-top: 0;
   width: 100%;
   padding: 5px 0;
-  max-height: 200px;
   overflow-y: scroll;
 }
 
@@ -30,6 +31,9 @@ ul {
   cursor: pointer;
 }
 .result:hover {
+  background-color: #eee;
+}
+.result.highlighted {
   background-color: #eee;
 }
 

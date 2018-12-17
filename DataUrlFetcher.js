@@ -7,16 +7,17 @@ export default class DataUrlFetcher {
   async getResults(query) {
     let url = this.url.replace(/{query}/, query);
     let $ = require("jquery");
+    let data;
 
     try {
-      let data = await $.ajax({
+      data = await $.ajax({
           url: url,
           dataType: "json"
         });
-
-      return this.formatResponse(data);
     } catch {
       return [];
     }
+
+    return this.formatResponse(data);
   }
 }
