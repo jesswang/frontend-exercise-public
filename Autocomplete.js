@@ -1,5 +1,6 @@
 import DataArrayFetcher from './DataArrayFetcher';
 import DataUrlFetcher from './DataUrlFetcher';
+import debounce from 'lodash.debounce';
 
 export default class Autocomplete {
   constructor(rootEl, options = {}) {
@@ -40,15 +41,20 @@ export default class Autocomplete {
     const dropdownLength = this.listEl.childElementCount;
 
     if (dropdownLength > 0) {
+      // up arrow key
       if (keyCode === 38) {
         this.highlightedIndex = (this.highlightedIndex !== -1) ?
           this.highlightedIndex - 1 : dropdownLength - 1;
           this.highlightResult();
-      } else if (keyCode === 40) {
+      }
+      // down arrow key
+      else if (keyCode === 40) {
         this.highlightedIndex = (this.highlightedIndex < dropdownLength - 1) ?
           this.highlightedIndex + 1 : -1;
           this.highlightResult();
-      } else if (keyCode === 13) {
+      }
+      // enter key
+      else if (keyCode === 13) {
         this.selectResult();
       }
     }
@@ -110,7 +116,7 @@ export default class Autocomplete {
     inputEl.setAttribute('autocomplete', 'off');
 
     inputEl.addEventListener('input',
-      event => this.onQueryChange(event.target.value));
+      debounce(event => this.onQueryChange(event.target.value), 500));
     inputEl.addEventListener('keydown',
       event => this.onKeydown(event.keyCode));
 
