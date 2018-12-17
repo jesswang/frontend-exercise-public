@@ -6,10 +6,8 @@ export default class DataArrayFetcher {
 
   getResults(query) {
     // Filter for matching strings
-    let results = this.data.filter((item) => {
+    return this.data.filter((item) => {
       return item.text.toLowerCase().includes(query.toLowerCase());
     });
-
-    return results.slice(0, this.numOfResults);
   }
 }

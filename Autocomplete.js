@@ -28,15 +28,6 @@ export default class Autocomplete {
     }
   }
 
-  /**
-   * Given an array and a query, return a filtered array based on the query.
-   */
-  getResults(query) {
-    if (!query) return [];
-
-    return this.resultsFetcher.getResults(query);
-  }
-
   onKeydown(keyCode) {
     const dropdownLength = this.listEl.childElementCount;
 
@@ -79,9 +70,19 @@ export default class Autocomplete {
     }
   }
 
+  /**
+   * Given an array, return a filtered array based on the query.
+   */
+  getResults(query) {
+    if (!query) return [];
+
+    return this.resultsFetcher.getResults(query);
+  }
+
   async onQueryChange(query) {
     // Get data for the dropdown
     let results = await this.getResults(query);
+    results = results.slice(0, this.options.numOfResults);
 
     this.updateDropdown(results);
   }
